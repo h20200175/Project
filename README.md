@@ -13,8 +13,7 @@
   The aim of this project to write a driver to read the data from ADXL745 sensor interfaced using I2C protocol to raspberry pi 4 (1GB). ADXL745 ... to be added
   
 # Introduction  
-  I2C stands for Inter-Integrated Circuit.I2C protocol is widely used for interfacing peripheral devices. I2C is a two wired protocol with one wire as "SCL" used for carrying       clock signal and other wire is "SDA" used for transferring data serially. I2C is a master slave protocol which means that the communication will always be initiated by the         master and in total we can connect 128 slaves.
-  ..... to be added
+  I2C stands for Inter-Integrated Circuit.I2C protocol is widely used for interfacing peripheral devices. I2C is a two wired protocol with one wire as "SCL" used for carrying       clock signal and other wire is "SDA" used for transferring data serially. I2C is a master slave protocol which means that the communication will always be initiated by the         master and in total we can connect 128 slaves. SMBus (System Management Bus) protocol is based on I2C. Most I2C devices work on SMBus but the reverse is not true.
   
   
 # Hardware
@@ -22,11 +21,19 @@
    ... image
   
   Hardware consists of RaspberryPi 4 and ADXL745 sensor.
-  
-# The I2C interface
-  
 
 # Kernel Driver
+  The project focuses on the implementation of the client side driver.
+  1. Adapter Driver - The adapter driver effectively represents a bus. It is used to effectively tie up a particular algorithm with a bus number.
+  2. Client Driver - Client represents the slave connected to the I2C bus. The method used to build the client driver is such that only the driver knows information of the device being connected and as soon as it finishes its like the device no longer existed in the system contrary to the device tree implementation. i2c_smbus read/write word/byte functions are used to communicate with adxl.
+  
+  In total 6 ioctl calls are implemented.
+  1. IMU_ACC - Obtain all the accleration values (x,y,z) from the adxl sensor.
+  2. IMU_ACC_X - Obtain all x acceleration from the adxl sensor.
+  3. IMU_ACC_Y - Obtain all y acceleration from the adxl sensor.
+  4. IMU_ACC_Z - Obtain all z acceleration from the adxl sensor.
+  5. IMU_STANDBY - Make the adxl sensor go into standby mode.
+  7. IMU_MEASURE - Make the adxl sensor go into measurement mode.
   
 
 # Schematic 
