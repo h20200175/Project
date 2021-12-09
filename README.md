@@ -34,6 +34,14 @@
   4. IMU_ACC_Z - Obtain all z acceleration from the adxl sensor.
   5. IMU_STANDBY - Make the adxl sensor go into standby mode.
   7. IMU_MEASURE - Make the adxl sensor go into measurement mode.
+
+# Register Configurations
+  1. First the Power control register is written to, to go in standby mode.
+  2. Then the 0x00 register is read and the ID of adxl345 is verified.
+  3. 0x04 is written to data format register to make data left justified.
+  4. 0x08 is written to Power Control register to go into measurement mode.
+  5. Registers are read and modified according to the ioctl calls.
+  6. For reading acceleration values regiters 0x32-0x37 are read.
   
 
 # Schematic 
@@ -65,6 +73,9 @@
    9. Give the rights to the user to open the device file using command "sudo chmod 777 /dev/adxl".
    10. Run the userspace program using command "./usrapp".
    11. If there is no error you will be able to see the sensor reading.![image](https://user-images.githubusercontent.com/91187808/145360991-494f856e-31d4-479a-8653-1f0aff9daae9.png)
+   12. To check the status of the registers (to verify standby/measurement mode)
+      12.1. First remove the module using "sudo rmmod adxl".
+      12.2. To view status of Power Control register use "i2cget -y 1 0x53 0x2D".
    
    
  
